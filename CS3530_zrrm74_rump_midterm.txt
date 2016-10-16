@@ -1,0 +1,6 @@
+cURL is a command line tool / software library for a bunch of different data transfer protocols. 
+It can make HTTP requests, e.g. GET, POST., but lacks the ability to actually parse or render anything i.e., html, css, and javascript. 
+
+PhantomJS on the other hand, is essentially a headless version of the WebKit rendering engine that runs in a web browser. It can execute javascript and render the final page like a web browser would. 
+
+The main difference between the two scripts is that in the imdb script we were able to get the information we needed by simply using cURL to get the raw html and parsing it. With the PhantomJS script we are effectively rendering the page in a headless web browser and taking a 'screenshot' of it by exporting it to pdf or png. 
