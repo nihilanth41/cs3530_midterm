@@ -1,6 +1,55 @@
+* Midterm 
+
+** Report
+
 cURL is a command line tool / software library for a bunch of different data transfer protocols. 
 It can make HTTP requests, e.g. GET, POST., but lacks the ability to actually parse or render anything i.e., html, css, and javascript. 
 
 PhantomJS on the other hand, is essentially a headless version of the WebKit rendering engine that runs in a web browser. It can execute javascript and render the final page like a web browser would. 
 
-The main difference between the two scripts is that in the imdb script we were able to get the information we needed by simply using cURL to get the raw html and parsing it. With the PhantomJS script we are effectively rendering the page in a headless web browser and taking a 'screenshot' of it by exporting it to pdf or png. 
+The main difference between the two scripts is that in the imdb script we were able to get the information we needed by simply using cURL to get the raw html and parsing it. 
+With the PhantomJS script we are effectively rendering the page in a headless web browser and taking a 'screenshot' of it by exporting it to pdf or png. 
+
+** Connecting
+
+Contents of `connect.sh`:
+
+	ssh -i "cs3530.pem" cs3530@ec2-54-199-164-113.ap-northeast-1.compute.amazonaws.com
+
+
+** Notes about script:  
+
+`screencap.sh` -- bash script that is executed from cron. 
+ 	- Sets the current working directory (i.e. $HOME/FrontPagePDFs) 
+	- Calls phantomjs w/ screencap.js as argument 
+
+`screencap.js` -- PhantomJS script. 
+	- Sets the URL (columbiamissourian.com)
+	- Renders page
+	- Set output filename (columbiamissourian.pdf)
+	- Exports webpage to pdf
+
+** Other notes: 
+	
+	- Script appears to grab mobile view of the site.
+	- I initially started building PhantomJS from source (see: install.sh), but I found out the precompiled version worked so I used that instead. 
+	- The binary is located at /home/cs3530/phantomjs-2.1.1-linux-x86_64/bin/phantomjs but I symlinked it to /home/cs3530/bin
+	- I set the $PATH to include $HOME/bin inside screencap.sh 
+		- Other alternatives would be to set $PATH in ~/.bash_profile, /etc/profile
+			- Probably would have installed to /opt/bin in this case
+		- Or install or symlink the binary in /usr/local/bin and not modify $PATH 
+	- I used the cs3530 user crontab to set it to run every day. 
+		- Use crontab -e or crontab -l to view
+	- Cron doesn't see shell environment variables so I opted to use hard coded paths.
+		- I.e. /home/cs3530/screencap.sh
+		- Another alternative would be to set the environment variables in the crontab
+		
+	- The filename for the export pdf is kind of generic (columbiamissourian.pdf), and it overwrites the file each day.
+
+** Links
+
+Git Repo: https://github.com/nihilanth41/cs3530_midterm
+
+** Author
+
+Zachary Rump
